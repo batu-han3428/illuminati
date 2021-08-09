@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        #spanDiv > span{
+            transition: 1s;
+        }
+
+        #spanDiv > span:hover{
+            color:white;
+        }
+    </style>
+</head>
+<body style="background-color:black;">
+    <div class="container-fluid" id="ajaxGosterimAlan">
+        <div class="row p-0">
+            <div class="col-md-12 p-0">
+                <img src="/dc3ea01b201ad8607ad93f1211ee5b83.gif" style="width: 100%; height: 500px;" alt="arkaPLan" />
+            </div>
+            <div class="col-md-12">
+                <span class="display-1 soru" style="cursor:default;">Bu Ailenin Bir Üyesi Olmak İstiyor musun?</span>
+                <div id="spanDiv" style="margin-top: 50px; display: flex; justify-content: space-around;">
+                    <span class="h2 evet" style="cursor: pointer;">Evet</span>
+                    <span class="h2 kararsiz" style="cursor: pointer;">Kararsızım</span>
+                    <span class="h2 hayir" style="cursor: pointer;">Hayır</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script type="text/javascript"> 
+    
+        var sayi = 2;
+        var ses = new Audio();
+        ses.src = "elektrikSes.mp3";
+        var evet = new Audio();
+        var hayir = new Audio();
+        var kararsiz = new Audio();
+        var mouseEnter = 0;
+
+        var ilkSayfa = setInterval(() => {
+            
+            for (let index = 0; index < sayi; index++) {
+
+                var sayac = setInterval(() => {
+
+                    $(".soru").css("color","white");    
+
+                    setTimeout(function(){
+                        $(".soru").css("color","rgb(33, 37, 41)");
+                    },100);
+                       
+                    if(mouseEnter != 1){
+                        
+                        ses.play();
+                    }
+                        
+
+                }, 100);        
+                
+            }
+
+            clearInterval(sayac);
+
+        }, 2000);
+
+        $(".evet").mouseenter(function(){
+            evet.src = "evet.mp3";
+            evet.play();
+            ses.src="";
+            mouseEnter = 1;
+
+        });
+
+        $(".evet").mouseout(function(){
+
+            evet.src = "";
+            ses.src = "elektrikSes.mp3";
+            mouseEnter = 0;
+        });
+
+        $(".hayir").mouseenter(function(){
+            hayir.src = "hayir.mp3";
+            hayir.play();
+            ses.src="";
+            mouseEnter = 1;
+
+        });
+
+        $(".hayir").mouseout(function(){
+            hayir.src = "";
+            ses.src = "elektrikSes.mp3";
+            mouseEnter = 0;
+        });
+
+        $(".kararsiz").mouseenter(function(){
+            kararsiz.src = "kararsiz.mp3";
+            kararsiz.play();
+            ses.src="";
+            mouseEnter = 1;
+
+        });
+
+        $(".kararsiz").mouseout(function(){
+            kararsiz.src = "";
+            ses.src = "elektrikSes.mp3";
+            mouseEnter = 0;
+        });
+
+
+        $(".evet").click(function(){
+
+            $.ajax({
+               
+                url:"evet.html",
+                success:function(a){
+                    $("#ajaxGosterimAlan > div").fadeOut(1000);
+
+                    setTimeout(() => {
+                        $("#ajaxGosterimAlan").css("display","none").html(a);
+                        $("#ajaxGosterimAlan > div").css("display","none");
+                        $("#ajaxGosterimAlan").css("display","block");
+                        $("#ajaxGosterimAlan > div").fadeIn(1000);
+
+                
+                        clearInterval(ilkSayfa);
+
+                        ses.src="ameno.mp3";
+
+                    }, 1100);
+                        
+                }
+            });
+
+        });
+
+
+    </script>
+</body>
+</html>
